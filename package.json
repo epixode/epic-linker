@@ -31,6 +31,6 @@
     "redux-saga": "^0.12.1"
   },
   "dependencies": {
-    "babel-plugin-runtime": "^1.0.0"
+    "babel-core": "^5.8.38"
   }
 }
