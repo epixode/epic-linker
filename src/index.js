@@ -256,7 +256,6 @@ export function link (rootBundle) {
         state = reducerMap.get(action.type)(state, action);
       } catch (ex) {
         console.log('exception in reducer', action, state, ex);
-        state = state.set('error', ex);
       }
     }
     return state;
