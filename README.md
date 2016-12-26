@@ -36,10 +36,12 @@ A bundle can depend on its own definitions.
 
 ## Definitions
 
-### Actions
+### Action types
 
-Actions are defined with the 'defineAction' builder, which takes the
-action name and value (string representation actually dispatched):
+Action types are defined with the 'defineAction' builder, which takes
+the action type name and value.  The name is used internally (it names
+a property of `deps`), the value is the string representation actually
+in redux actions.
 
     yield defineAction('name', 'String.Representation');
 
