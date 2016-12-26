@@ -119,8 +119,15 @@ export function link (rootBundle) {
     throw new Error(`use of undeclared dependency ${property}`);
   }
 
+  const depsBase = {
+    get: function (name) {
+      return scope[name];
+    }
+  };
+
   function include_ (bundle) {
-    const deps = makeSafeProxy({}, undeclaredDependencyError);
+    const base = Object.create(depsBase);
+    const deps = makeSafeProxy(base, undeclaredDependencyError);
     const it = bundle(deps);
     let result = it.next();
     while (!result.done) {
