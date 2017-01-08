@@ -240,6 +240,7 @@ export function link (rootBundle) {
       view = connect(scope[selector])(view);
       view.displayName = `View(${name})`;
     }
+    scope[name] = view;
     typeMap.set(name, 'view');
   });
 
