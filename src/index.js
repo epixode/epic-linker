@@ -33,7 +33,6 @@ import createSagaMiddleware from 'redux-saga';
 import {delay} from 'redux-saga';
 import {call, cancelled, fork} from 'redux-saga/effects';
 import {connect} from 'react-redux';
-import getDisplayName from 'react-display-name';
 
 function makeSafeProxy (obj, onError) {
   if (typeof Proxy !== 'function') {
@@ -238,11 +237,9 @@ export function link (rootBundle) {
   viewQueue.forEach(function (dir) {
     let {name, selector, view} = dir;
     if (selector in scope) {
-      const displayName = `connect(${getDisplayName(view)})`;
       view = connect(scope[selector])(view);
-      view.displayName = displayName;
     }
-    scope[name] = view;
+    scope[name] = {...view, displayName: `View(${name})`};
     typeMap.set(name, 'view');
   });
 
