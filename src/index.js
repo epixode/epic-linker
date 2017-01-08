@@ -238,8 +238,8 @@ export function link (rootBundle) {
     let {name, selector, view} = dir;
     if (selector in scope) {
       view = connect(scope[selector])(view);
+      view.displayName = `View(${name})`;
     }
-    scope[name] = {...view, displayName: `View(${name})`};
     typeMap.set(name, 'view');
   });
 
