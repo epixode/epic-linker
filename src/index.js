@@ -139,7 +139,7 @@ export function link (rootBundle) {
         result = it.next();
       }
     } catch (ex) {
-      console.error('error in bundle', bundle);
+      console.error(`error ${ex.message} in bundle`, bundle);
       throw ex;
     }
   }
