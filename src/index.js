@@ -90,9 +90,6 @@ export function link (rootBundle) {
   // name → value
   const scope = {};
 
-  // Map(name → type)
-  const typeMap = new Map();
-
   // Map(action type → action name)
   const nameForActionType = new Map();
 
@@ -144,7 +141,6 @@ export function link (rootBundle) {
       throw `action type conflict: ${action}`;
     }
     scope[name] = action;
-    typeMap.set(name, 'action');
     nameForActionType.set(action, name);
   }
 
@@ -160,15 +156,11 @@ export function link (rootBundle) {
         return {};
       }
     };
-    typeMap.set(name, 'selector');
   }
 
   function addReducer_ (name, reducer) {
     if (!(name in scope)) {
       throw new Error(`reducer for undefined action ${name}`);
-    }
-    if (typeMap.get(name) !== 'action') {
-      throw new Error(`reducer for non-action ${name}`);
     }
     const actionType = scope[name];
     if (reducerMap.has(actionType)) {
@@ -227,9 +219,6 @@ export function link (rootBundle) {
 
   // Define reducers.
   reducerQueue.forEach(function (dir) {
-    if (typeMap.get(dir.name) !== 'action') {
-      throw new Error(`invalid reducer target ${dir.name}`);
-    }
     addReducer_(dir.name, dir.reducer);
   });
 
@@ -241,7 +230,6 @@ export function link (rootBundle) {
       view.displayName = `View(${name})`;
     }
     scope[name] = view;
-    typeMap.set(name, 'view');
   });
 
   // Provide dependencies.
