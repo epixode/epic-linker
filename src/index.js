@@ -234,10 +234,15 @@ export function link (rootBundle) {
   // Define and connect views.
   viewQueue.forEach(function (dir) {
     let {name, selector, view} = dir;
-    if (selector in scope) {
-      view = connect(scope[selector])(view);
-      view.displayName = `View(${name})`;
+    if (selector !== undefined) {
+      if (typeof selector === 'string') {
+        selector = scope[selector];
+      }
     }
+    if (typeof selector === 'function') {
+      view = connect(selector)(view);
+    }
+    view.displayName = `View(${name})`;
     scope[name] = view;
   });
 
