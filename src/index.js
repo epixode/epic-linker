@@ -56,6 +56,12 @@ export function use (...names) {
   return {type: 'use', names};
 };
 
+export const def = defineValue;
+
+export function defineValue (name, value) {
+  return {type: 'define', name, value};
+};
+
 export function defineAction (name, action) {
   return {type: 'defineAction', name, action};
 };
@@ -144,18 +150,11 @@ export function link (rootBundle) {
     nameForActionType.set(action, name);
   }
 
-  function defineSelector_ (name, selector) {
+  function define_ (name, value) {
     if (name in scope) {
       throw new Error(`linker conflict on ${name}`);
     }
-    scope[name] = function () {
-      try {
-        return selector.apply(null, arguments);
-      } catch (ex) {
-        console.log(`selector ${name} threw an exception`, ex);
-        return {};
-      }
-    };
+    scope[name] = value;
   }
 
   function addReducer_ (name, reducer) {
@@ -181,12 +180,16 @@ export function link (rootBundle) {
       case 'use':
         useQueue.push([deps, dir.names]);
         break;
+      case 'define':
+        define_(dir.name, dir.value);
+        useQueue.push([deps, dir.name]);
+        break;
       case 'defineAction':
         defineAction_(dir.name, dir.action);
         useQueue.push([deps, dir.name]);
         break;
       case 'defineSelector':
-        defineSelector_(dir.name, dir.selector);
+        define_(dir.name, dir.selector);
         useQueue.push([deps, dir.name]);
         break;
       case 'defineView':
