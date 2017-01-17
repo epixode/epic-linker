@@ -262,11 +262,7 @@ export function link (rootBundle) {
   const reducer = function (state, action) {
     // TODO: add support for reducer hooks
     if (reducerMap.has(action.type)) {
-      try {
-        state = reducerMap.get(action.type)(state, action);
-      } catch (ex) {
-        console.log('exception in reducer', action, state, ex);
-      }
+      state = reducerMap.get(action.type)(state, action);
     }
     return state;
   }
