@@ -276,17 +276,12 @@ export function link (rootBundle) {
   // Create the store.
   const store = createStore(reducer, null, enhancer);
 
-  function* runSaga (saga) {
-    try {
-      yield call(saga);
-    } catch (ex) {
-      console.log(`saga ${saga.name} has exited`, ex);
-    }
-  }
-
   // Start the sagas.
   function* rootSaga () {
-    yield sagas.map(saga => fork(runSaga, saga));
+    const task = yield sagas.map(call);
+    task.done.catch(function (error) {
+      throw error;
+    });
   }
 
   function start () {
