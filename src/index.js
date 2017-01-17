@@ -131,7 +131,13 @@ export function link (rootBundle) {
   function include_ (bundle) {
     const base = Object.create(depsBase);
     const deps = makeSafeProxy(base, undeclaredDependencyError);
-    const it = bundle(deps);
+    let it;
+    try {
+      it = bundle(deps);
+    } catch (ex) {
+      console.error('error in bundle', bundle);
+      throw ex;
+    }
     let result = it.next();
     while (!result.done) {
       interpretDirective(result.value, deps);
