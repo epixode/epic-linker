@@ -285,7 +285,7 @@ export function link (rootBundle) {
   }
 
   function start () {
-    sagaMiddleware.run(rootSaga);
+    return sagaMiddleware.run(rootSaga);
   }
 
   return {store, scope, start};
