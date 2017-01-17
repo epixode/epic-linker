@@ -22,25 +22,16 @@ bundle:
 
 The linker makes no attempt at detecting or avoiding double-inclusion.
 
-## Dependencies
-
-A bundle can declare dependencies (actions, selectors, views) on linked
-bundles with the 'use' builder, applied to any number of names:
-
-    function* myBundle (deps) {
-      yield use('myAction', 'mySelector', 'MyView');
-      /* use as deps.myAction, deps.mySelector, deps.MyView */
-    }
-
-A bundle can depend on its own definitions.
-
 ## Definitions
+
+A bundle can make *definitions* which populate a flat namespace shared
+across all bundles that are linked together.
 
 ### Action types
 
 Action types are defined with the 'defineAction' builder, which takes
-the action type name and value.  The name is used internally (it names
-a property of `deps`), the value is the string representation actually
+the action type name and value.  The name is used by the code to refer
+to the action type, the value is the string representation actually used
 in redux actions.
 
     yield defineAction('name', 'String.Representation');
@@ -57,13 +48,32 @@ selector name and function:
 ### Views
 
 Views are defined with the 'defineView' builder, which takes the view
-name, an optional selector name, and React class or function:
+name, an optional selector name or function, and a React component:
 
     yield defineView('TodoList', 'getTodoItems', TodoView);
     yield defineView('App', AppView);
 
-The selector, if specified, is automatically attached to view instances
-and allows it to extract properties from the redux store.
+The selector, if given, is used to connect view instances to the
+redux store.
+
+### Constants
+
+The 'defineValue' builder (alias 'def) can be used to make constants
+available to other bundles:
+
+    yield defineValue('Name', value);
+
+## Dependencies
+
+A bundle can access definitions made in linked bundles with the 'use'
+builder:
+
+    function* myBundle (deps) {
+      yield use('myAction', 'mySelector', 'MyView');
+      /* use as deps.myAction, deps.mySelector, deps.MyView */
+    }
+
+A bundle can refer to its own definition without having to "use" them.
 
 ## Reducers
 
