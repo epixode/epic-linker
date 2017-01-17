@@ -3,6 +3,9 @@
 
 This package supports modular applications based on react and redux-saga.
 
+**Warning**: the current interface using generators hinders debugging
+and will soon be replaced by a much simpler mechanism.
+
 ## Bundles
 
 A *bundle* is defined by a generator yielding directives:
