@@ -91,6 +91,10 @@ export function addEnhancer (enhancer) {
   return {type: 'addEnhancer', enhancer};
 };
 
+export function defer (callback) {
+  return {type: 'defer', callback};
+};
+
 export function link (rootBundle) {
 
   // name → value
@@ -105,6 +109,8 @@ export function link (rootBundle) {
   const sagas = [];
 
   const enhancers = [];
+
+  const defers = [];
 
   // Reducer linking is deferred until all actions have been defined.
   const reducerQueue = [];
@@ -210,6 +216,9 @@ export function link (rootBundle) {
       case 'addEnhancer':
         enhancers.push(dir.enhancer);
         break;
+      case 'defer':
+        defers.push(dir.callback);
+        break;
       default:
         throw `unhandled link directive type ${dir.type}`;
     }
@@ -255,6 +264,11 @@ export function link (rootBundle) {
     } else {
       throw new Error('invalid use');
     }
+  });
+
+  // Call the deferred callbacks.
+  defers.forEach(function (callback) {
+    callback.call();
   });
 
   // Build the reducer.

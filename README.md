@@ -103,3 +103,12 @@ Store enhancers can be added with the 'addEnhancer' linker directive:
     yield addEnhancer(DevTools.instrument());
 
 Enhancers are composed in link order.
+
+## Defers
+
+Use the 'defer' builder to defer execution of a function until after
+link has completed and definitions have been provided.
+
+    yield defer(function () { … });
+
+Defers run in link order.
