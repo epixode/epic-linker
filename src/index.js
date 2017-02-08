@@ -132,9 +132,6 @@ export default function link (rootBuilder) {
   rootBundle._linkViews();
   injectAll('views');
 
-  // Injection is done, call the deferred callbacks.
-  rootBundle._runDefers();
-
   // Compose the reducer now that all actions have been defined.
   const actionMap = new Map();
   rootBundle._buildActionMap(actionMap);
@@ -159,6 +156,9 @@ export default function link (rootBuilder) {
 
   // Create the store.
   const store = createStore(reducer, null, enhancer);
+
+  /* Call the deferred callbacks, passing the store. */
+  rootBundle._runDefers(store);
 
   /* Collect the sagas.  The root task is returned, suggested use is:
 

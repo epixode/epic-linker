@@ -145,15 +145,15 @@ Bundle.prototype._linkViews = function () {
   }
 };
 
-Bundle.prototype._runDefers = function () {
+Bundle.prototype._runDefers = function (store) {
   var i;
   // The bundle's defers run first,
   for (i = 0; i < this._.defers.length; i += 1) {
-    this._.defers[i].call();
+    this._.defers[i].call(null, store);
   }
   // followed by the defers in included bundles.
   for (i = 0; i < this._.bundles.length; i += 1) {
-    this._.bundles[i]._runDefers();
+    this._.bundles[i]._runDefers(store);
   }
 };
 
