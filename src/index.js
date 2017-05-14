@@ -157,8 +157,10 @@ export default function link (rootBuilder) {
   // Create the store.
   const store = createStore(reducer, null, enhancer);
 
-  /* Call the deferred callbacks, passing the store. */
-  rootBundle._runDefers(store);
+  function finalize (...args) {
+    /* Call the deferred callbacks. */
+    rootBundle._runDefers(...args);
+  }
 
   /* Collect the sagas.  The root task is returned, suggested use is:
 
@@ -177,6 +179,7 @@ export default function link (rootBuilder) {
     scope: makeSafeProxy(globalScope, undefinedNameError),
     store,
     reducer,
+    finalize,
     start
   };
 };
