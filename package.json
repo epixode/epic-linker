@@ -1,6 +1,6 @@
 {
   "name": "epic-linker",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Linker for react and redux-saga.",
   "main": "index.js",
   "scripts": {
