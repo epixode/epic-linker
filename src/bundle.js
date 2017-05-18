@@ -1,6 +1,6 @@
 
 import {connect} from 'react-redux';
-import {call} from 'redux-saga/effects';
+import {all, call} from 'redux-saga/effects';
 
 import {makeSafeProxy, directCompose, reverseCompose} from './utils';
 
@@ -196,7 +196,7 @@ Bundle.prototype._saga = function () {
     effects.push(call(this._.bundles[i]._saga()));
   }
   return function* () {
-    yield effects;
+    yield all(effects);
   };
 };
 
